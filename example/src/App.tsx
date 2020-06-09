@@ -6,7 +6,6 @@ import Onfido, {
   OnfidoOptions,
   OnfidoDocumentCountryCode,
 } from 'onfido-rn-sdk';
-import { NativeModules } from 'react-native';
 
 export default function App() {
   function start() {
@@ -37,8 +36,7 @@ export default function App() {
       <Button
         title="test"
         onPress={() => {
-          // Onfido.sampleMethod('test', 1, console.log);
-          console.log(NativeModules.Onfido.testMethod('test', 1, console.log));
+          Onfido.startSDK('test.whatever', {}, console.log, console.log);
         }}
       />
     </View>

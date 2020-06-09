@@ -68,11 +68,17 @@ repositories {
     }
     google()
     jcenter()
+    
+    maven {
+        // onfido
+        url  "https://dl.bintray.com/onfido/maven"
+    }
 }
 
 dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'  // From node_modules
+    implementation 'com.onfido.sdk.capture:onfido-capture-sdk:5.5.0'
 }
 
 def configureReactNativePom(def pom) {
@@ -96,6 +102,7 @@ def configureReactNativePom(def pom) {
 
         developers {
             developer {
+                id packageJson.author
                 name packageJson.author
             }
         }
