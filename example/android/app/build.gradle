@@ -128,7 +128,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.OnfidoRnSdkExample"
+        applicationId "com.onfidornsdkexample"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -189,8 +189,6 @@ dependencies {
     } else {
         implementation jscFlavor
     }
-
-    compile project(':onfidornsdk')
 }
 
 // Run this once to be able to run the application with BUCK

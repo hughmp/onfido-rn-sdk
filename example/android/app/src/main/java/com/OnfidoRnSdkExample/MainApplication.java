@@ -1,4 +1,4 @@
-package com.OnfidoRnSdkExample;
+package com.onfidornsdkexample;
 
 import android.app.Application;
 import android.content.Context;
@@ -27,7 +27,6 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for OnfidoRnSdkExample:
           // packages.add(new MyReactNativePackage());
-          packages.add(new OnfidoRnSdkPackage());
 
           return packages;
         }
