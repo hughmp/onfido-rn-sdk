@@ -33,12 +33,6 @@ export default function App() {
     <View style={styles.container}>
       <Text>Onfido</Text>
       <Button title="start" onPress={start} />
-      <Button
-        title="test"
-        onPress={() => {
-          Onfido.startSDK('test.whatever', {}, console.log, console.log);
-        }}
-      />
     </View>
   );
 }

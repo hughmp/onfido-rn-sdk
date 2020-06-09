@@ -17,7 +17,7 @@ class OnfidoSdkActivityEventListener extends BaseActivityEventListener {
     private Callback resolve = null;
     private Callback reject = null;
 
-    public OnfidoSdkActivityEventListener(final Onfido client){
+    public OnfidoSdkActivityEventListener(final Onfido client) {
         this.client = client;
     }
 

@@ -43,6 +43,7 @@ public class OnfidoRnSdkModule extends ReactContextBaseJavaModule {
 
         activityEventListener.setCallbacks(resolve, reject);
 
+        OnfidoFlowSteps onfidoFlowSteps = new OnfidoFlowSteps(options);
         Activity currentActivity = super.getCurrentActivity();
 
         if (currentActivity == null) {
@@ -53,6 +54,7 @@ public class OnfidoRnSdkModule extends ReactContextBaseJavaModule {
         try {
             final OnfidoConfig onfidoConfig = OnfidoConfig.builder(currentActivity)
                     .withSDKToken(token)
+                    .withCustomFlow(onfidoFlowSteps.get())
                     .build();
 
             client.startActivityForResult(currentActivity, 1, onfidoConfig);
