@@ -1,21 +1,23 @@
 package com.onfidornsdk;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import com.facebook.react.bridge.ReadableMap;
+
 import com.onfido.android.sdk.capture.ui.options.FlowStep;
 import com.onfido.android.sdk.capture.DocumentType;
 import com.onfido.android.sdk.capture.utils.CountryCode;
 import com.onfido.android.sdk.capture.ui.options.CaptureScreenStep;
+import com.onfido.android.sdk.capture.ui.camera.face.FaceCaptureStep;
+import com.onfido.android.sdk.capture.ui.camera.face.FaceCaptureVariant;
 
 class OnfidoFlowSteps {
 
-    private final ReadableMap options;
-    final List<FlowStep> flowStepList;
+    private ReadableMap options;
+    List<FlowStep> flowStepList;
 
-
-    public OnfidoFlowSteps(ReadableMap options) {
-        this.flowStepList = new ArrayList<>();
-        this.options = options;
-    }
+    public OnfidoFlowSteps() {}
 
     private void setWelcomeStep() {
         // configure welcome step
@@ -28,30 +30,24 @@ class OnfidoFlowSteps {
 
     private void setDocumentStep() {
         // configure document step
-        if (options.hasKey("withDocumentStep")) {
-            if (options.getBoolean("withDocumentStep") == true) {
+        if (options.hasKey("withDocumentStep") && options.getBoolean("withDocumentStep") == true) {
+            if (options.hasKey("documentType") && options.hasKey("documentCountryCode")) {
+                setDocumentStepWithOptions();
+            } else {
                 flowStepList.add(FlowStep.CAPTURE_DOCUMENT);
-                setDocumentTypeAndCountryCode();
             }
         }
     }
 
-    private void setDocumentTypeAndCountryCode() {
+    private void setDocumentStepWithOptions() {
         // configure document type and country code
-        if (options.hasKey("documentType") && options.hasKey("documentCountryCode")) {
-            try {
-                DocumentType documentType = DocumentType.valueOf(options.getString("documentType"));
-                CountryCode countryCode = getCountryCodeFromString(options.getString("documentCountryCode"));
+        DocumentType documentType = DocumentType.valueOf(options.getString("documentType"));
+        CountryCode countryCode = getCountryCodeFromString(options.getString("documentCountryCode"));
 
-                flowStepList.add(new CaptureScreenStep(documentType, countryCode));
-            }
-            catch {
-                return;
-            }
-        }
+        flowStepList.add(new CaptureScreenStep(documentType, countryCode));
     }
 
-    public static CountryCode getCountryCodeFromString(String countryCodeString) {
+    private CountryCode getCountryCodeFromString(String countryCodeString) {
         CountryCode countryCode = null;
 
         for (CountryCode cc : CountryCode.values()) {
@@ -61,17 +57,41 @@ class OnfidoFlowSteps {
         }
 
         if (countryCode == null) {
-            throw new Exception("Unexpected countryCodeString.");
+            return CountryCode.GB;
         }
 
         return countryCode;
     }
 
-    public static FlowStep[] get() {
+    private void setFaceStep() {
+        // configure face capture step
+        if (options.hasKey("withFaceStep") && options.getBoolean("withFaceStep") == true) {
+            if (options.hasKey("faceVariant")) {
+                final String faceVariant = options.getString("faceVariant");
+                if (faceVariant.equals("PHOTO")) {
+                    flowStepList.add(new FaceCaptureStep(FaceCaptureVariant.PHOTO));
+                }
+                if (faceVariant.equals("VIDEO")) {
+                    flowStepList.add(new FaceCaptureStep(FaceCaptureVariant.VIDEO));
+                }
+            } else {
+                flowStepList.add(new FaceCaptureStep(FaceCaptureVariant.PHOTO));
+            }
+        }
+    }
+
+
+    public FlowStep[] getFromOptions(ReadableMap options) {
+        this.options = options;
+        this.flowStepList = new ArrayList<>();
+
         setWelcomeStep();
         setDocumentStep();
+        setFaceStep();
 
-        return flowStepList;
+        flowStepList.add(FlowStep.FINAL);
+
+        return flowStepList.toArray(new FlowStep[0]);
     }
 
 }

@@ -14,7 +14,7 @@ import com.onfido.android.sdk.capture.OnfidoConfig;
 import com.onfido.android.sdk.capture.OnfidoFactory;
 import com.onfido.android.sdk.capture.errors.OnfidoException;
 import com.onfido.android.sdk.capture.upload.Captures;
-
+import com.onfido.android.sdk.capture.ui.options.FlowStep;
 
 public class OnfidoRnSdkModule extends ReactContextBaseJavaModule {
 
@@ -43,7 +43,7 @@ public class OnfidoRnSdkModule extends ReactContextBaseJavaModule {
 
         activityEventListener.setCallbacks(resolve, reject);
 
-        OnfidoFlowSteps onfidoFlowSteps = new OnfidoFlowSteps(options);
+        OnfidoFlowSteps onfidoFlowSteps = new OnfidoFlowSteps();
         Activity currentActivity = super.getCurrentActivity();
 
         if (currentActivity == null) {
@@ -52,15 +52,17 @@ public class OnfidoRnSdkModule extends ReactContextBaseJavaModule {
         }
 
         try {
+            FlowStep[] flow = onfidoFlowSteps.getFromOptions(options);
+
             final OnfidoConfig onfidoConfig = OnfidoConfig.builder(currentActivity)
                     .withSDKToken(token)
-                    .withCustomFlow(onfidoFlowSteps.get())
+                    .withCustomFlow(flow)
                     .build();
 
             client.startActivityForResult(currentActivity, 1, onfidoConfig);
         }
         catch (final Exception e) {
-            reject.invoke(FLOW_ERROR_UNHANDLED);
+            reject.invoke(FLOW_ERROR_UNHANDLED, String.valueOf(e));
             return;
         }
 
