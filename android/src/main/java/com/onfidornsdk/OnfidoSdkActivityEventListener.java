@@ -17,6 +17,10 @@ class OnfidoSdkActivityEventListener extends BaseActivityEventListener {
     private Callback resolve = null;
     private Callback reject = null;
 
+    private static final String RESPONSE_SUCCESS = "RESPONSE_SUCCESS";
+    private static final String RESPONSE_CANCEL = "RESPONSE_CANCEL";
+    private static final String FLOW_ERROR_UNHANDLED = "FLOW_ERROR_UNHANDLED";
+
     public OnfidoSdkActivityEventListener(final Onfido client) {
         this.client = client;
     }
@@ -34,17 +38,17 @@ class OnfidoSdkActivityEventListener extends BaseActivityEventListener {
         client.handleActivityResult(resultCode, data, new Onfido.OnfidoResultListener() {
             @Override
             public void userCompleted(Captures captures) {
-                resolve.invoke();
+                resolve.invoke(RESPONSE_SUCCESS);
             }
 
             @Override
             public void userExited(ExitCode exitCode) {
-                reject.invoke(exitCode.toString());
+                reject.invoke(RESPONSE_CANCEL, exitCode.toString());
             }
 
             @Override
             public void onError(OnfidoException e) {
-                reject.invoke(e.getMessage());
+                reject.invoke(FLOW_ERROR_UNHANDLED, e.getMessage());
             }
         });
     }

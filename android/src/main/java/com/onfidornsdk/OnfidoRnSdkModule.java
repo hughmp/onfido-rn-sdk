@@ -19,7 +19,6 @@ import com.onfido.android.sdk.capture.ui.options.FlowStep;
 public class OnfidoRnSdkModule extends ReactContextBaseJavaModule {
 
     private static final String CONFIG_ERROR_UNHANDLED = "CONFIG_ERROR_UNHANDLED";
-    private static final String FLOW_ERROR_UNHANDLED = "FLOW_ERROR_UNHANDLED";
 
     final Onfido client;
     private final ReactApplicationContext reactContext;
@@ -41,17 +40,16 @@ public class OnfidoRnSdkModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void startSDK(String token, ReadableMap options, Callback resolve, Callback reject) {
 
-        activityEventListener.setCallbacks(resolve, reject);
-
-        OnfidoFlowSteps onfidoFlowSteps = new OnfidoFlowSteps();
-        Activity currentActivity = super.getCurrentActivity();
-
-        if (currentActivity == null) {
-            reject.invoke(CONFIG_ERROR_UNHANDLED);
-            return;
-        }
-
         try {
+            activityEventListener.setCallbacks(resolve, reject);
+
+            OnfidoFlowSteps onfidoFlowSteps = new OnfidoFlowSteps();
+            Activity currentActivity = super.getCurrentActivity();
+
+            if (currentActivity == null) {
+                throw new Exception("current activity is null");
+            }
+
             FlowStep[] flow = onfidoFlowSteps.getFromOptions(options);
 
             final OnfidoConfig onfidoConfig = OnfidoConfig.builder(currentActivity)
@@ -62,7 +60,7 @@ public class OnfidoRnSdkModule extends ReactContextBaseJavaModule {
             client.startActivityForResult(currentActivity, 1, onfidoConfig);
         }
         catch (final Exception e) {
-            reject.invoke(FLOW_ERROR_UNHANDLED, String.valueOf(e));
+            reject.invoke(CONFIG_ERROR_UNHANDLED, String.valueOf(e));
             return;
         }
 
