@@ -1,6 +1,6 @@
 {
   "name": "onfido-rn-sdk",
-  "version": "0.3.0",
+  "version": "0.2.0",
   "description": "A react-native wrapper for the IOS & Android Onfido identity verification SDKs",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
