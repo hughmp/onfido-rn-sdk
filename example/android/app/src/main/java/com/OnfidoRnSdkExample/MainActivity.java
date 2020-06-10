@@ -1,4 +1,4 @@
-package com.OnfidoRnSdkExample;
+package com.onfidornsdkexample;
 
 import com.facebook.react.ReactActivity;
 

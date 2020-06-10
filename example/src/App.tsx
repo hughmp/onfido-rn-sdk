@@ -11,18 +11,18 @@ export default function App() {
   function start() {
     const token = '.'; // get your SDK token
     const options: OnfidoOptions = {
-      // iosTheme: {
-      //   primaryColor: '#000000',
-      //   primaryTitleColor: '#00c56b',
-      //   primaryBackgroundPressedColor: '#c50000',
-      //   secondaryBackgroundPressedColor: '#ffffff',
-      //   supportDarkMode: true,
-      // },
+      iosTheme: {
+        primaryColor: '#000000',
+        primaryTitleColor: '#00c56b',
+        primaryBackgroundPressedColor: '#c50000',
+        secondaryBackgroundPressedColor: '#ffffff',
+        supportDarkMode: true,
+      },
       withWelcomeStep: true,
       withDocumentStep: true,
       withFaceStep: true,
-      faceVariant: OnfidoFaceVariant.VIDEO,
-      documentType: OnfidoDocument.PASSPORT,
+      faceVariant: OnfidoFaceVariant.PHOTO,
+      documentType: OnfidoDocument.DRIVING_LICENCE,
       documentCountryCode: OnfidoDocumentCountryCode.GBR,
     };
 
