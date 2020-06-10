@@ -41,7 +41,24 @@ Onfido.startSDK(token, options, successHandler, errorHandler);
 **Note**: Both keys will be required for app submission.
 
 **Android**
-TODO: Android not yet implemented.
+
+1. Until the Onfido package is available in `jcenter` you will need to modify the `repositories` directive in your application's `build.gradle`:
+
+```
+repositories {
+    maven {
+        url "https://dl.bintray.com/onfido/maven"
+    }
+}
+```
+
+2. Enable multidex by modifying the `defaultConfig` in your applications `android/app/build.gradle`:
+
+```
+defaultConfig {
+    multiDexEnabled true
+}
+```
 
 ## License
 
