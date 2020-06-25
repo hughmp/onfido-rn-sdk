@@ -12,11 +12,31 @@ npm install onfido-rn-sdk
 
 ### Quick Start
 
-```js
-import Onfido from 'onfido-rn-sdk';
+```ts
+import Onfido, {
+  OnfidoFaceVariant,
+  OnfidoDocument,
+  OnfidoOptions,
+  OnfidoDocumentCountryCode,
+} from 'onfido-rn-sdk';
 
-const token = 'YOUR_SDK_TOKEN_HERE';
-const options = {};
+const token = 'YOUR_TOKEN_HERE'; // get your SDK token from Onfido
+const options: OnfidoOptions = {
+  iosTheme: {
+    primaryColor: '#000000',
+    primaryTitleColor: '#00c56b',
+    primaryBackgroundPressedColor: '#c50000',
+    secondaryBackgroundPressedColor: '#ffffff',
+    supportDarkMode: true,
+  },
+  withWelcomeStep: true,
+  withDocumentStep: true,
+  withFaceStep: true,
+  faceVariant: OnfidoFaceVariant.PHOTO,
+  documentType: OnfidoDocument.DRIVING_LICENCE,
+  documentCountryCode: OnfidoDocumentCountryCode.GBR,
+};
+
 const successHandler = message => console.log(message);
 const errorHandler = message => console.log(message);
 
@@ -39,6 +59,12 @@ Onfido.startSDK(token, options, successHandler, errorHandler);
 ```
 
 **Note**: Both keys will be required for app submission.
+
+3. Ensure your `Podfile` references as a minimum iOS platform version of `10.0`.
+
+```
+platform :ios, '10.0'
+```
 
 **Android**
 
